@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novella | Premium Digital Books & Novels</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <!-- Google Identity Services for Google Sign-in -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    :root[data-theme="dark"] {
+      --bg-main: #0a0d14;
+      --bg-card: #101726;
+      --bg-card-hover: #172338;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #1e293b;
+      --accent-brown: #854d0e;
+      --accent-brown-hover: #a16207;
+      --gold: #f59e0b;
+      --reader-bg: #0f172a;
+      --reader-paper: #131b2e;
+      --reader-text: #e2e8f0;
+      --modal-bg: #111827;
+    }
+
+    :root[data-theme="light"] {
+      --bg-main: #f8f6f0;
+      --bg-card: #ffffff;
+      --bg-card-hover: #faf8f5;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent-brown: #78350f;
+      --accent-brown-hover: #92400e;
+      --gold: #d97706;
+      --reader-bg: #eae6df;
+      --reader-paper: #ffffff;
+      --reader-text: #1c1917;
+      --modal-bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    /* Header */
+    header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 1.2rem 2.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .brand {
+      font-family: 'Cinzel', serif;
+      font-size: 1.7rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand span { color: var(--gold); }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn-theme {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+    }
+
+    .btn-theme:hover { border-color: var(--gold); }
+
+    .btn-auth {
+      background: var(--accent-brown);
+      color: #fff;
+      border: none;
+      padding: 0.55rem 1.3rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-auth:hover { background: var(--accent-brown-hover); }
+
+    .user-pill {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-pill .logout-link {
+      color: #ef4444;
+      cursor: pointer;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 3.5rem 1.5rem 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Books Grid */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .book-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+
+    .book-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 35px rgba(0,0,0,0.25);
+      border-color: var(--gold);
+    }
+
+    .book-cover {
+      height: 240px;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      color: #fff;
+    }
+
+    .book-cover::after {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .c-navy { background: linear-gradient(135deg, #0f172a, #1e293b); }
+    .c-brown { background: linear-gradient(135deg, #451a03, #78350f); }
+    .c-wine { background: linear-gradient(135deg, #4c0519, #881337); }
+    .c-dark { background: linear-gradient(135deg, #030712, #1f2937); }
+    .c-amber { background: linear-gradient(135deg, #713f12, #854d0e); }
+    .c-teal { background: linear-gradient(135deg, #042f2e, #115e59); }
+
+    .book-cover .genre {
+      font-size: 0.75rem;
+      background: rgba(0,0,0,0.4);
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .book-cover h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+      line-height: 1.25;
+    }
+
+    .book-cover .author {
+      font-size: 0.92rem;
+      opacity: 0.9;
+    }
+
+    .book-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .book-desc {
+      color: var(--text-muted);
+      font-size: 0.93rem;
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 1.25rem;
+    }
+
+    .book-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+    }
+
+    .book-price {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--gold);
+    }
+
+    .btn-buy {
+      background: var(--accent-brown);
+      color: white;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-buy:hover { background: var(--accent-brown-hover); }
+
+    .btn-read-unlocked {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Modal Overlay & Card */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      background: var(--modal-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 480px;
+      padding: 2.25rem;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    /* Login Form Styles */
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+    .btn-submit {
+      width: 100%;
+      background: var(--accent-brown);
+      color: white;
+      border: none;
+      padding: 0.85rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .divider {
+      text-align: center;
+      margin: 1.5rem 0;
+      position: relative;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: var(--border);
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+
+    /* Reader Section in same page */
+    #reader-section {
+      display: none;
+      background: var(--reader-paper);
+      border: 2px solid var(--accent-brown);
+      border-radius: 20px;
+      padding: 3rem;
+      margin-bottom: 3.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+
+    .reader-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .reader-title { font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 900; }
+    .reader-author { color: var(--gold); font-weight: 600; }
+
+    .btn-pdf {
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.6rem;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+    }
+    .btn-pdf:hover { background: #b91c1c; }
+
+    .reader-content {
+      font-family: 'Lora', serif;
+      font-size: 1.35rem;
+      line-height: 2.3;
+      color: var(--reader-text);
+      white-space: pre-wrap;
+      max-height: 650px;
+      overflow-y: auto;
+      padding-right: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header>
+    <div class="brand">
+      📖 NOVELLA <span>BOOKS</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn-theme" onclick="toggleTheme()">
+        <span id="theme-icon">☀️</span>
+        <span id="theme-text">Light Mode</span>
+      </button>
+
+      <!-- Auth Container -->
+      <div id="auth-header-container">
+        <button class="btn-auth" onclick="openLoginModal()">Sign In / Register</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Classic Novels & Masterpieces</h1>
+    <p>Sign in to keep your library forever. Pay securely via PayPal or Credit Card, and read directly or download as PDF.</p>
+  </section>
+
+  <main class="container">
+    <!-- Unlocked Book Reader (In the same page) -->
+    <div id="reader-section">
+      <div class="reader-header">
+        <div>
+          <span style="color:#10b981; font-weight:700; font-size:0.9rem;">✓ Purchased & Unlocked</span>
+          <h2 class="reader-title" id="reader-title">Novel Title</h2>
+          <p class="reader-author" id="reader-author">Author Name</p>
+        </div>
+        <div>
+          <button class="btn-pdf" onclick="downloadCleanPDF()">📥 Download Clean PDF</button>
+        </div>
+      </div>
+      <div class="reader-content" id="reader-text"></div>
+    </div>
+
+    <!-- Books Catalogue -->
+    <div class="books-grid" id="books-list"></div>
+  </main>
+
+  <!-- Checkout & PayPal Modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="checkout-title" style="font-family:'Cinzel', serif; font-size:1.4rem;">Complete Purchase</h3>
+        <button class="modal-close" onclick="closeModal('checkout-modal')">&times;</button>
+      </div>
+      <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1rem;" id="checkout-desc"></p>
+      <div style="font-size:1.6rem; font-weight:900; color:var(--gold); margin-bottom:1.5rem;" id="checkout-price"></div>
+      
+      <!-- Official PayPal & Card buttons render here -->
+      <div id="paypal-button-container"></div>
+    </div>
+  </div>
+
+  <!-- Sign In Modal -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 style="font-family:'Cinzel', serif; font-size:1.5rem;">Account Sign In</h3>
+        <button class="modal-close" onclick="closeModal('login-modal')">&times;</button>
+      </div>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem;">
+        Sign in to bind your purchases to your account. Your unlocked books will always be remembered.
+      </p>
+
+      <!-- Google Sign In Button Container -->
+      <div style="display:flex; justify-content:center; margin-bottom:1rem;" id="g_id_signin"></div>
+
+      <div class="divider">or sign in with email</div>
+
+      <form onsubmit="handleEmailLogin(event)">
+        <div class="form-group">
+          <label>Your Email Address</label>
+          <input type="email" id="login-email" placeholder="name@example.com" required>
+        </div>
+        <button type="submit" class="btn-submit">Continue with Email</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       ⚙️ PAYPAL SETTINGS (Set your Client ID here)
+       ========================================================================== */
+    const PAYPAL_SETTINGS = {
+      // Put your real PayPal Client ID from developer.paypal.com:
+      clientId: "test", 
+      currency: "USD"
+    };
+
+    /* ==========================================================================
+       📚 NOVELS DATA (Rich English Classics)
+       ========================================================================== */
+    const books = [
+      {
+        id: "gatsby",
+        title: "The Great Gatsby",
+        author: "F. Scott Fitzgerald",
+        genre: "Classic Fiction",
+        price: 1.99,
+        theme: "c-brown",
+        desc: "A timeless portrait of the Jazz Age, romantic obsession, wealth, and the illusions of the American Dream in 1920s Long Island.",
+        content: `THE GREAT GATSBY
+By F. Scott Fitzgerald
+
+Chapter 1
+
+In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since.
+"Whenever you feel like criticizing anyone," he told me, "just remember that all the people in this world haven't had the advantages that you've had."
+
+He didn't say any more, but we've always been unusually communicative in a reserved way, and I understood that he meant a great deal more than that. In consequence, I'm inclined to reserve all judgments, a habit that has opened up many curious natures to me and also made me the victim of not a few veteran bores.
+
+When I came back from the East last autumn I felt that I wanted the world to be in uniform and at a sort of moral attention forever; I wanted no more riotous excursions with privileged glimpses into the human heart. Only Gatsby, the man who gives his name to this book, was exempt from my reaction—Gatsby, who represented everything for which I have an unaffected scorn. If personality is an unbroken series of successful gestures, then there was something gorgeous about him, some heightened sensitivity to the promises of life... It was an extraordinary gift for hope, a romantic readiness such as I have never found in any other person and which it is not likely I shall ever find again.`
+      },
+      {
+        id: "1984",
+        title: "1984",
+        author: "George Orwell",
+        genre: "Dystopian Classic",
+        price: 2.49,
+        theme: "c-dark",
+        desc: "The haunting masterpiece on totalitarian surveillance, psychological control, Big Brother, and the erasure of personal truth.",
+        content: `NINETEEN EIGHTY-FOUR
+By George Orwell
+
+Part One - Chapter 1
+
+This title is still under copyright in many countries, so its full text is not included here.
+Replace this block with a licensed copy of the text if you have the rights to sell it.
+
+Synopsis (original summary):
+Winston Smith lives in a city ruled by the Party and its figurehead, Big Brother, where every home has a telescreen watching and listening. His job is to rewrite old records so the past always agrees with the Party. When he begins a secret diary and a forbidden love, he starts to question the world he is told to accept.`
+      },
+      {
+        id: "pride",
+        title: "Pride and Prejudice",
+        author: "Jane Austen",
+        genre: "Classic Romance",
+        price: 1.99,
+        theme: "c-wine",
+        desc: "Wit, manners, and misjudgment: Elizabeth Bennet and Mr. Darcy in Georgian England's most beloved romance.",
+        content: `PRIDE AND PREJUDICE
+By Jane Austen
+
+Chapter 1
+
+It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.
+
+However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered the rightful property of some one or other of their daughters.`
+      },
+      {
+        id: "frankenstein",
+        title: "Frankenstein",
+        author: "Mary Shelley",
+        genre: "Gothic Horror",
+        price: 2.29,
+        theme: "c-teal",
+        desc: "A young scientist's obsession creates life, and then cannot bear the consequences. The first great science-fiction novel.",
+        content: `FRANKENSTEIN
+By Mary Shelley
+
+Letter 1
+
+You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings. I arrived here yesterday, and my first task is to assure my dear sister of my welfare and increasing confidence in the success of my undertaking.`
+      },
+      {
+        id: "alice",
+        title: "Alice's Adventures in Wonderland",
+        author: "Lewis Carroll",
+        genre: "Fantasy Classic",
+        price: 1.49,
+        theme: "c-navy",
+        desc: "Down the rabbit hole into a world of riddles, talking creatures, and delightful nonsense.",
+        content: `ALICE'S ADVENTURES IN WONDERLAND
+By Lewis Carroll
+
+Chapter 1 - Down the Rabbit-Hole
+
+Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, "and what is the use of a book," thought Alice "without pictures or conversations?"`
+      }
+    ];
+
+    /* ==========================================================================
+       STATE
+       ========================================================================== */
+    const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+    let currentUser = null;
+    let currentBookId = null;
+    let paypalLoaded = false;
+
+    function safeGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+    function safeSet(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+
+    function getPurchases() {
+      if (!currentUser) return [];
+      try { return JSON.parse(safeGet("novella_purchases_" + currentUser.email)) || []; }
+      catch (e) { return []; }
+    }
+
+    function addPurchase(bookId) {
+      const list = getPurchases();
+      if (!list.includes(bookId)) list.push(bookId);
+      safeSet("novella_purchases_" + currentUser.email, JSON.stringify(list));
+    }
+
+    /* ==========================================================================
+       THEME
+       ========================================================================== */
+    function applyTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      document.getElementById("theme-icon").textContent = theme === "dark" ? "☀️" : "🌙";
+      document.getElementById("theme-text").textContent = theme === "dark" ? "Light Mode" : "Dark Mode";
+      safeSet("novella_theme", theme);
+    }
+
+    function toggleTheme() {
+      const now = document.documentElement.getAttribute("data-theme");
+      applyTheme(now === "dark" ? "light" : "dark");
+    }
+
+    /* ==========================================================================
+       RENDER CATALOGUE
+       ========================================================================== */
+    function renderBooks() {
+      const owned = getPurchases();
+      const list = document.getElementById("books-list");
+      list.innerHTML = "";
+
+      books.forEach(function (b) {
+        const unlocked = owned.includes(b.id);
+        const card = document.createElement("div");
+        card.className = "book-card";
+        card.innerHTML =
+          '<div class="book-cover ' + b.theme + '">' +
+            '<span class="genre">' + b.genre + '</span>' +
+            '<h3>' + b.title + '</h3>' +
+            '<span class="author">' + b.author + '</span>' +
+          '</div>' +
+          '<div class="book-body">' +
+            '<p class="book-desc">' + b.desc + '</p>' +
+            '<div class="book-footer">' +
+              '<span class="book-price">$' + b.price.toFixed(2) + '</span>' +
+              (unlocked
+                ? '<button class="btn-read-unlocked" onclick="openReader(\'' + b.id + '\')">Read Now</button>'
+                : '<button class="btn-buy" onclick="startPurchase(\'' + b.id + '\')">🛒 Buy</button>') +
+            '</div>' +
+          '</div>';
+        list.appendChild(card);
+      });
+    }
+
+    /* ==========================================================================
+       AUTH
+       ========================================================================== */
+    function renderAuthHeader() {
+      const box = document.getElementById("auth-header-container");
+      if (currentUser) {
+        box.innerHTML =
+          '<div class="user-pill">👤 <span id="user-label"></span>' +
+          '<span class="logout-link" onclick="logout()">Sign out</span></div>';
+        document.getElementById("user-label").textContent = currentUser.name || currentUser.email;
+      } else {
+        box.innerHTML = '<button class="btn-auth" onclick="openLoginModal()">Sign In / Register</button>';
+      }
+    }
+
+    function setUser(user) {
+      currentUser = user;
+      safeSet("novella_user", JSON.stringify(user));
+      renderAuthHeader();
+      renderBooks();
+    }
+
+    function logout() {
+      currentUser = null;
+      safeSet("novella_user", "");
+      document.getElementById("reader-section").style.display = "none";
+      renderAuthHeader();
+      renderBooks();
+    }
+
+    function handleEmailLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById("login-email").value.trim().toLowerCase();
+      if (!email) return;
+      setUser({ email: email, name: email.split("@")[0] });
+      closeModal("login-modal");
+      if (currentBookId) { startPurchase(currentBookId); }
+    }
+
+    function handleGoogleCredential(response) {
+      try {
+        const payload = response.credential.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+        const json = decodeURIComponent(atob(payload).split("").map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(""));
+        const data = JSON.parse(json);
+        setUser({ email: data.email.toLowerCase(), name: data.name || data.email });
+        closeModal("login-modal");
+        if (currentBookId) { startPurchase(currentBookId); }
+      } catch (err) {
+        alert("Google sign-in failed. Please use email instead.");
+      }
+    }
+
+    function initGoogle() {
+      if (!window.google || !google.accounts || !google.accounts.id) return false;
+      google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleCredential });
+      google.accounts.id.renderButton(document.getElementById("g_id_signin"), { theme: "outline", size: "large", width: 300 });
+      return true;
+    }
+
+    function openLoginModal() {
+      document.getElementById("login-modal").classList.add("active");
+      initGoogle();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("active");
+    }
+
+    /* ==========================================================================
+       PURCHASE (PayPal)
+       ========================================================================== */
+    function loadPayPalSdk(callback) {
+      if (paypalLoaded && window.paypal) { callback(); return; }
+      const s = document.createElement("script");
+      s.src = "https://www.paypal.com/sdk/js?client-id=" +
+              encodeURIComponent(PAYPAL_SETTINGS.clientId) +
+              "&currency=" + encodeURIComponent(PAYPAL_SETTINGS.currency);
+      s.onload = function () { paypalLoaded = true; callback(); };
+      s.onerror = function () {
+        document.getElementById("paypal-button-container").innerHTML =
+          '<p style="color:#ef4444;">Could not load PayPal. Check your internet connection and Client ID.</p>';
+      };
+      document.head.appendChild(s);
+    }
+
+    function startPurchase(bookId) {
+      currentBookId = bookId;
+      if (!currentUser) { openLoginModal(); return; }
+
+      const book = books.find(function (b) { return b.id === bookId; });
+      if (!book) return;
+
+      document.getElementById("checkout-title").textContent = book.title;
+      document.getElementById("checkout-desc").textContent = "by " + book.author;
+      document.getElementById("checkout-price").textContent = "$" + book.price.toFixed(2);
+      document.getElementById("paypal-button-container").innerHTML = "";
+      document.getElementById("checkout-modal").classList.add("active");
+
+      loadPayPalSdk(function () {
+        window.paypal.Buttons({
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [{
+                description: book.title,
+                amount: { value: book.price.toFixed(2), currency_code: PAYPAL_SETTINGS.currency }
+              }]
+            });
+          },
+          onApprove: function (data, actions) {
+            return actions.order.capture().then(function () {
+              addPurchase(book.id);
+              closeModal("checkout-modal");
+              renderBooks();
+              openReader(book.id);
+            });
+          },
+          onError: function () {
+            alert("Payment failed. Please try again.");
+          }
+        }).render("#paypal-button-container");
+      });
+    }
+
+    /* ==========================================================================
+       READER + PDF
+       ========================================================================== */
+    function openReader(bookId) {
+      const book = books.find(function (b) { return b.id === bookId; });
+      if (!book || !getPurchases().includes(bookId)) return;
+      currentBookId = bookId;
+      document.getElementById("reader-title").textContent = book.title;
+      document.getElementById("reader-author").textContent = book.author;
+      document.getElementById("reader-text").textContent = book.content;
+      const section = document.getElementById("reader-section");
+      section.style.display = "block";
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function downloadCleanPDF() {
+      const book = books.find(function (b) { return b.id === currentBookId; });
+      if (!book || !getPurchases().includes(book.id)) return;
+
+      const w = window.open("", "_blank");
+      if (!w) { alert("Please allow pop-ups, then try again. Choose 'Save as PDF' in the print dialog."); return; }
+
+      w.document.write(
+        "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>" + escapeHtml(book.title) + "</title>" +
+        "<style>body{font-family:Georgia,serif;font-size:13pt;line-height:1.8;color:#000;max-width:680px;margin:40px auto;padding:0 20px;}" +
+        "h1{font-size:24pt;margin-bottom:4px;}h2{font-size:13pt;font-weight:normal;color:#555;margin-top:0;}" +
+        "pre{font-family:inherit;white-space:pre-wrap;}</style></head><body>" +
+        "<h1>" + escapeHtml(book.title) + "</h1><h2>" + escapeHtml(book.author) + "</h2><hr>" +
+        "<pre>" + escapeHtml(book.content) + "</pre></body></html>"
+      );
+      w.document.close();
+      w.focus();
+      setTimeout(function () { w.print(); }, 400);
+    }
+
+    /* ==========================================================================
+       INIT
+       ========================================================================== */
+    (function init() {
+      applyTheme(safeGet("novella_theme") || "dark");
+      try {
+        const saved = JSON.parse(safeGet("novella_user"));
+        if (saved && saved.email) currentUser = saved;
+      } catch (e) {}
+      renderAuthHeader();
+      renderBooks();
+
+      document.querySelectorAll(".modal-overlay").forEach(function (m) {
+        m.addEventListener("click", function (ev) { if (ev.target === m) m.classList.remove("active"); });
+      });
+    })();
+  </script>
+</body>
+</html>
